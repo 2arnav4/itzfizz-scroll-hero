@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  --color-night: #0e0e0e;
+  --color-road: #1b1b1b;
+  --color-ink: #111111;
+  --color-lime: #d4f54f;
+  --color-sky: #6ac9ff;
+  --color-orange: #fa7328;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* Road and car share one size variable so every layer scales together. */
+.road {
+  --car-w: clamp(140px, 20vw, 300px);
+  height: calc(var(--car-w) * 0.6);
+}
+
+.car {
+  width: var(--car-w);
+}
+
+/* The trail is one car-width wider than the road so the car can fully exit. */
+.trail {
+  width: calc(100% + var(--car-w));
+}
+
+.trail-content {
+  width: calc(100% - var(--car-w));
+}
+
+.trail,
+.trail-inner,
+.car {
+  will-change: transform;
+}
+
+.headline {
+  display: flex;
+  gap: 0.32em;
+  font-size: clamp(1.25rem, 5.6vw, 6.5rem);
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.headline-space {
+  width: 0.5em;
+}
+
+/*
+ * Start states live in CSS so the static HTML never flashes the end state
+ * before JavaScript loads. GSAP animates from these with fromTo.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .intro-hidden {
+    opacity: 0;
+  }
+
+  /* Car starts half off-screen; the trail ends at its centre, so it is hidden. */
+  .car {
+    transform: translateX(-50%);
+  }
+
+  .trail {
+    transform: translateX(-100%);
+  }
+
+  .trail-inner {
+    transform: translateX(100%);
+  }
+
+  [data-stat-bar] {
+    transform: scaleX(0);
+  }
+}
+
+/* Reduced motion: no pin, no scrub. Show the last frame: headline revealed, car gone. */
+@media (prefers-reduced-motion: reduce) {
+  .car {
+    visibility: hidden;
+  }
+
+  .trail {
+    transform: translateX(calc(var(--car-w) / -2));
+  }
+
+  .trail-inner {
+    transform: translateX(calc(var(--car-w) / 2));
+  }
+}
