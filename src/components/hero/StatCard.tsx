@@ -11,7 +11,7 @@ export function StatCard({ value, label, tone }: Stat) {
   return (
     <article
       data-stat
-      className={`intro-hidden relative overflow-hidden rounded-2xl p-4 sm:p-6 ${TONES[tone]}`}
+      className={`intro-hidden relative h-full overflow-hidden rounded-2xl p-4 sm:p-6 ${TONES[tone]}`}
     >
       <p className="text-3xl font-semibold tabular-nums sm:text-5xl">
         <span data-count={value}>{value}</span>%
